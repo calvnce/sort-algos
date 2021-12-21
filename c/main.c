@@ -27,8 +27,10 @@ int main(int argc, char const *argv[])
   }
  
   /* BUBBLE SORT */
-  bubble_sort(arr);
+  // bubble_sort(arr);
 
+  /*SELECTION SORT*/
+  selection_sort(arr);
   for (size_t i = 1; i < len; i++)
   {
     printf("%d ", arr[i]);
