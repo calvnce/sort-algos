@@ -78,3 +78,61 @@ void selection_sort(int *arr)
     i+=1;
   }
 }
+
+/**
+ * @brief - performs insertion sort on the provided array or values. 
+ * The default sorting mode is ascending
+ * 
+ * @param arr 
+ */
+void insertion_sort(int *arr)
+{
+  size_t len = arr[0];
+  size_t i = 2; //start at index 2 because index 0 holds the stashed length of the array pointer
+  size_t j;
+
+  while (i < len)
+  {
+    int key = arr[i];
+    j = i-1;
+    //lookup the appropriate position of the values being checked
+    //This inner loop moves element arr[i] to its correct place so that after the loop, the first i+1 elements are sorted.
+    while (j > 0 && arr[j] > key)
+    {
+      //shift the larger values to the right
+      arr[j + 1] = arr[j];
+      j -= 1;
+    }
+    //insert the key at the right position
+    arr[j + 1] = key;
+    i += 1;
+  }
+}
+
+/**
+ * @brief - The recursive vesion of the insertion sort.
+ * Th recursion just replaces the outer loop, calling itself and storing successively smaller values of n on the stack until n equals 0, 
+ * where the function then returns up the call chain to execute the code after each recursive call starting with n equal to 1, 
+ * with n increasing by 1 as each instance of the function returns to the prior instance. 
+ * The initial call would be recursive_insertion_sort(arr, length(arr)-1). 
+ * 
+ * @param arr 
+ * @param n 
+ */
+void recursive_insertion_sort(int *arr, int n)
+{
+  if (n > 0)
+  {
+    recursive_insertion_sort(arr,n - 1);
+    int key = arr[n];
+    int j = n - 1;
+
+    while (j > 0 && arr[j] > key)
+    {
+      arr[j+ 1] = arr[j];
+      j -= 1;
+    }
+    arr[j + 1] = key;
+  }
+  
+}

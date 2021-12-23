@@ -31,6 +31,11 @@ int main(int argc, char const *argv[])
 
   /*SELECTION SORT*/
   selection_sort(arr);
+  
+  /*INSERTION SORT*/
+  insertion_sort(arr);
+  // recursive_insertion_sort(arr, (len - 2));
+
   for (size_t i = 1; i < len; i++)
   {
     printf("%d ", arr[i]);
