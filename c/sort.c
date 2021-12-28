@@ -1,4 +1,5 @@
 #include "sort.h"
+#include <stdio.h>
 
 /**
  * @brief performs bubble sort on the provided array or values. 
@@ -6,22 +7,20 @@
  * Bubble sort is based on the idea of repeatedly comparing pairs of adjacent elements 
  * and then swapping their positions if they exist in the wrong order. 
  * 
- * @param arr 
+ * @param lst 
  */
-void bubble_sort(int* arr)
-{
-  size_t len = arr[0];
-  
-  for (size_t i = 1; i < len; i++)
+void bubblesort(list lst)
+{ 
+  for (size_t i = 0; i < lst.size; i++)
   {
     int swapped = 0;
-    for (size_t j = 1; j < len - i; j++)
+    for (size_t j = 0; j < lst.size - i - 1; j++)
     {
-      if (arr[j] > arr[j + 1])
+      if (lst.items[j] > lst.items[j + 1])
       {
-        int temp = arr[j];
-        arr[j] = arr[j + 1];
-        arr[j+1] = temp;
+        int temp = lst.items[j];
+        lst.items[j] = lst.items[j + 1];
+        lst.items[j+1] = temp;
         
         swapped = 1;
       }
@@ -45,37 +44,21 @@ void bubble_sort(int* arr)
  * 
  * @param arr 
  */
-void selection_sort(int *arr)
+void selectionsort(list lst)
 {
-  size_t len = arr[0];
-  size_t i = 1;
-  size_t j;
-
-  while (i < len)
+  for (size_t i = 0; i < lst.size; i++)
   {
-    // assume the first element in the array is the minimum */
     int min = i;
-
-    for (j = i + 1; j < len; j++)
+    for (size_t j = i + 1; j < lst.size; j++)
     {
-      // if this element is less, then it is the new minimum */
-      if (arr[j] < arr[min])
+      if (lst.items[j] < lst.items[min])
       {
-        //we have discovered the index pointing our new minimum
         min = j;
       }
     }
-    //only perform swap if the new minimum was found. 
-    //This ensures that our sorting procedure is stable
-    if (min != i)
-    {
-      //swap the values and place the values at their appropriate locations
-      int temp = arr[i];
-      arr[i] = arr[min];
-      arr[min] = temp;
-    }
-    //increment i
-    i+=1;
+    int temp = lst.items[i];
+    lst.items[i] = lst.items[min];
+    lst.items[min] = temp;
   }
 }
 
@@ -83,29 +66,22 @@ void selection_sort(int *arr)
  * @brief - performs insertion sort on the provided array or values. 
  * The default sorting mode is ascending
  * 
- * @param arr 
+ * @param lst 
  */
-void insertion_sort(int *arr)
+void insertionsort(list lst)
 {
-  size_t len = arr[0];
-  size_t i = 2; //start at index 2 because index 0 holds the stashed length of the array pointer
-  size_t j;
-
-  while (i < len)
+  for (size_t i = 1; i < lst.size; i++)
   {
-    int key = arr[i];
-    j = i-1;
-    //lookup the appropriate position of the values being checked
-    //This inner loop moves element arr[i] to its correct place so that after the loop, the first i+1 elements are sorted.
-    while (j > 0 && arr[j] > key)
+    int key = lst.items[i];
+    int j = i - 1;
+    while (j >= 0 && lst.items[j] > key)
     {
       //shift the larger values to the right
-      arr[j + 1] = arr[j];
+      lst.items[j + 1] = lst.items[j];
       j -= 1;
     }
-    //insert the key at the right position
-    arr[j + 1] = key;
-    i += 1;
+    //insert the key - current smallest value at the appropriate position
+    lst.items[j + 1] = key;
   }
 }
 
@@ -114,25 +90,90 @@ void insertion_sort(int *arr)
  * Th recursion just replaces the outer loop, calling itself and storing successively smaller values of n on the stack until n equals 0, 
  * where the function then returns up the call chain to execute the code after each recursive call starting with n equal to 1, 
  * with n increasing by 1 as each instance of the function returns to the prior instance. 
- * The initial call would be recursive_insertion_sort(arr, length(arr)-1). 
+ * The initial call would be recursive_insertionsort(list, length(list)-1). 
  * 
- * @param arr 
+ * @param lst 
  * @param n 
  */
-void recursive_insertion_sort(int *arr, int n)
+void recursive_insertionsort(list lst, int n)
 {
   if (n > 0)
   {
-    recursive_insertion_sort(arr,n - 1);
-    int key = arr[n];
-    int j = n - 1;
+    recursive_insertionsort(lst, n-1);
+    int key = lst.items[n];
+    size_t j = n - 1;
 
-    while (j > 0 && arr[j] > key)
+    while ( j>= 0 && lst.items[j] > key)
     {
-      arr[j+ 1] = arr[j];
+      lst.items[j + 1] = lst.items[j];
       j -= 1;
     }
-    arr[j + 1] = key;
+    lst.items[j + 1] = key;
   }
-  
+}
+
+/**
+ * @brief performs merge sort on the provided array or values. 
+ * The default sorting mode is ascending
+ * 
+ * @param lst 
+ */
+void mergesort(list lst)
+{  
+  if (lst.size > 1)
+  {
+    size_t mid = lst.size/2;
+    size_t end = lst.size - mid;
+    list sub_list_a;
+    list sub_list_b;
+    size_t i = 0;
+
+    sub_list_a.size = mid;
+    sub_list_a.items = (int*)malloc(sub_list_a.size * sizeof(int));
+    sub_list_b.size = end;
+    sub_list_b.items = (int*)malloc(sub_list_b.size * sizeof(int));
+
+    for (size_t j = 0; j < sub_list_a.size; j++)
+    {
+      sub_list_a.items[j] = lst.items[i];
+      i += 1;
+    }
+    for (size_t j = 0; j < sub_list_b.size; j++)
+    {
+      sub_list_b.items[j] = lst.items[i];
+      i += 1;
+    }
+    
+    mergesort(sub_list_a);
+    mergesort(sub_list_b);
+    merge(lst, sub_list_a, sub_list_b);   
+  }
+}
+
+/**
+ * @brief merges the elements from the sublists to the final list.
+ * The merging is done in Linear Time
+ * 
+ * @param lst 
+ * @param sub_list_a 
+ * @param sub_list_b 
+ */
+void merge(list lst, list sub_list_a, list sub_list_b)
+{
+  size_t a = 0;
+  size_t b = 0;
+
+  while ((a + b) < lst.size)
+  {
+    if (b==sub_list_b.size || (a < sub_list_a.size && sub_list_a.items[a] < sub_list_b.items[b]))
+    {
+      lst.items[a + b] = sub_list_a.items[a];
+      a += 1;
+    }
+    else
+    {
+      lst.items[a + b] = sub_list_b.items[b];
+      b += 1;
+    }
+  }
 }

@@ -6,18 +6,16 @@ int main(int argc, char const *argv[])
 {
   srandom(time(0));
 
-  size_t len = 1001;
-  int *arr = (int*)malloc(len*sizeof(int));
-  
-  //stores the length of the array
-  arr[0]=len;
+  list list;
+  list.size = 55;
+  list.items = (int*)malloc(list.size *sizeof(int));
 
   //generate some random data for testing
-  if (arr)
+  if (list.items)
   {
-    for (size_t i = 1; i < len; i++)
+    for (size_t i = 0; i < list.size; i++)
     {
-      arr[i] = (rand() % (368 - 4 + 1)) + 4;
+      list.items[i] = (rand() % (578 - 15 + 1)) + 15;
     }
   }
   else
@@ -25,25 +23,38 @@ int main(int argc, char const *argv[])
     printf("Failed to allocate memory!");
     return EXIT_FAILURE;
   }
- 
+  for (size_t i = 0; i < list.size; i++)
+  {
+    printf("%d ", list.items[i]);
+  }
+  printf("\n\n");
+
+
   /* BUBBLE SORT */
-  // bubble_sort(arr);
+  bubblesort(list);
 
   /*SELECTION SORT*/
-  selection_sort(arr);
+  // selectionsort(list);
   
   /*INSERTION SORT*/
-  insertion_sort(arr);
-  // recursive_insertion_sort(arr, (len - 2));
+  // insertionsort(list);
+  // recursive_insertionsort(list, (list.size - 1));
 
-  for (size_t i = 1; i < len; i++)
+  /*MERGE SORT*/
+  // mergesort(list);
+
+  for (size_t i = 0; i < list.size; i++)
   {
-    printf("%d ", arr[i]);
+    if (i%10==0 && i!=0)
+    {
+      printf("\n");
+    }
+    printf("%d\t", list.items[i]);   
   }
   printf("\n");
   
   //free the momory
-  free(arr);
+  free(list.items);
 
   return EXIT_SUCCESS;
 }
