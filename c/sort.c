@@ -18,9 +18,7 @@ void bubblesort(list lst)
     {
       if (lst.items[j] > lst.items[j + 1])
       {
-        int temp = lst.items[j];
-        lst.items[j] = lst.items[j + 1];
-        lst.items[j+1] = temp;
+        swap(lst, j, j+1);
         
         swapped = 1;
       }
@@ -56,9 +54,7 @@ void selectionsort(list lst)
         min = j;
       }
     }
-    int temp = lst.items[i];
-    lst.items[i] = lst.items[min];
-    lst.items[min] = temp;
+    swap(lst, i, min);
   }
 }
 
@@ -176,4 +172,178 @@ void merge(list lst, list sub_list_a, list sub_list_b)
       b += 1;
     }
   }
+}
+
+/**
+ * @brief This ersion of merge sort uses another approach - which is the most comonly used method
+ * to implement the merge sort algorithm.
+ * 
+ * @param lst 
+ */
+void merge_sort(list lst)
+{
+  mergesort_procedure(lst, 0, lst.size - 1);
+}
+
+void mergesort_procedure(list lst, size_t start, size_t end)
+{
+  if (start < end)
+  {
+    size_t mid = (start + end)/2;
+    mergesort_procedure(lst, start, mid);
+    mergesort_procedure(lst, mid + 1, end);
+    _merge_(lst, start, mid, end);
+  }
+  
+}
+void _merge_(list lst, size_t start, size_t mid, size_t end)
+{
+  list sub_list_a;
+  list sub_list_b;
+  size_t i;
+  size_t a = 0;
+  size_t b = 0;
+  sub_list_a.size = (mid - start + 1);
+  sub_list_b.size = end - mid;
+  sub_list_a.items = (int *)malloc(sub_list_a.size * sizeof(int));
+  sub_list_b.items = (int *)malloc(sub_list_b.size * sizeof(int));
+
+  //fill sub list a
+  for (; a < sub_list_a.size; a++)
+  {
+    sub_list_a.items[a] = lst.items[start + a];
+  }
+  //fill the sub list b
+  for (; b <  sub_list_b.size; b++)
+  {
+    sub_list_b.items[b] = lst.items[mid + b + 1];
+  }
+
+  //reset the index trackers
+  b = a = 0;
+  i = start;
+
+  //merge the sublists into the final sorted list
+  while (a < sub_list_a.size && b < sub_list_b.size)
+  {
+    if (sub_list_a.items[a] < sub_list_b.items[b])
+    {
+      lst.items[i] = sub_list_a.items[a];
+      a += 1;
+    }
+    else
+    {
+      lst.items[i] = sub_list_b.items[b];
+      b += 1;
+    }   
+    i += 1;
+  }
+
+  for (; a < sub_list_a.size; a++)
+  {
+    lst.items[i] = sub_list_a.items[a];
+    i += 1;
+  }
+  for (; b < sub_list_b.size; b++)
+  {
+    lst.items[i] = sub_list_b.items[b];
+    i += 1;
+  }
+}
+
+/**
+ * @brief performs quick sort on the provided array or values. 
+ * The default sorting mode is ascending
+ * 
+ * @param lst 
+ */
+void quicksort(list lst)
+{
+  quicksort_procedure(lst, 0, lst.size - 1);
+}
+
+/**
+ * @brief this is a recursive function that performs the actual sorting procedure
+ * 
+ * @param lst 
+ * @param start 
+ * @param end 
+ */
+void quicksort_procedure(list lst, size_t start, size_t end)
+{
+  if (start < end)
+  {
+    size_t partition_point = partition(lst, start, end);
+    quicksort_procedure(lst,start, partition_point);
+    quicksort_procedure(lst, partition_point + 1, end);
+  }
+}
+/**
+ * @brief performs the hoare partition on the list.
+ * it iterates from both ends at once towards the center
+ * 
+ * @param lst 
+ * @param start 
+ * @param end 
+ * @return int 
+ */
+int partition(list lst, size_t start, size_t end)
+{
+  size_t pivot = median_of_three(lst, start, end);
+  while (1)
+  {
+   while (lst.items[start] < lst.items[pivot])
+   {
+     start += 1;
+   }
+   while (lst.items[end] > lst.items[pivot])
+   {
+     end -= 1;
+   }
+
+   if (start >= end)
+   {
+     return end;
+   }
+   
+   //perform the swap 
+   swap(lst, start, end);
+   start += 1;
+   end -=1;
+  }
+  //return a bad value if the correct partition point is not found
+  //this can only happen if our implementation is wrong
+  return -1;
+}
+
+/**
+ * @brief finds the median of the three bound values to be used as the pivot
+ * 
+ * @param lst 
+ * @param start 
+ * @param end 
+ * @return int 
+ */
+int median_of_three(list lst, size_t start, size_t end)
+{
+  size_t mid = (end+ start)/2;
+  int x = lst.items[mid] - lst.items[start];
+  int y = lst.items[start] - lst.items[end];
+  int z = lst.items[mid] - lst.items[end];
+
+  return (x*y > 0 ? start : (x*z > 0 ? end : mid));
+}
+
+/**
+ * @brief performs a generic swap of the two values a and b
+ * 
+ * @param lst 
+ * @param a 
+ * @param b 
+ */
+void swap(list lst, size_t a, size_t b)
+{
+  int temp = lst.items[a];
+  lst.items[a] = lst.items[b];
+  lst.items[b] = temp;
 }

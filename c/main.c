@@ -7,7 +7,7 @@ int main(int argc, char const *argv[])
   srandom(time(0));
 
   list list;
-  list.size = 55;
+  list.size = 5000000;
   list.items = (int*)malloc(list.size *sizeof(int));
 
   //generate some random data for testing
@@ -15,7 +15,7 @@ int main(int argc, char const *argv[])
   {
     for (size_t i = 0; i < list.size; i++)
     {
-      list.items[i] = (rand() % (578 - 15 + 1)) + 15;
+      list.items[i] = (rand() % (978 - 5 + 1)) + 5;
     }
   }
   else
@@ -31,7 +31,7 @@ int main(int argc, char const *argv[])
 
 
   /* BUBBLE SORT */
-  bubblesort(list);
+  // bubblesort(list);
 
   /*SELECTION SORT*/
   // selectionsort(list);
@@ -42,10 +42,13 @@ int main(int argc, char const *argv[])
 
   /*MERGE SORT*/
   // mergesort(list);
+  // merge_sort(list);
 
+  /*QUICKSORT*/
+  quicksort(list);
   for (size_t i = 0; i < list.size; i++)
   {
-    if (i%10==0 && i!=0)
+    if (i%25==0 && i!=0)
     {
       printf("\n");
     }
