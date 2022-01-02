@@ -10,10 +10,10 @@
  */
 void bubblesort(list lst)
 { 
-  for (size_t i = 0; i < lst.size; i++)
+  for (int i = 0; i < lst.size; i++)
   {
     int swapped = 0;
-    for (size_t j = 0; j < lst.size - i - 1; j++)
+    for (int j = 0; j < lst.size - i - 1; j++)
     {
       if (lst.items[j] > lst.items[j + 1])
       {
@@ -43,10 +43,10 @@ void bubblesort(list lst)
  */
 void selectionsort(list lst)
 {
-  for (size_t i = 0; i < lst.size; i++)
+  for (int i = 0; i < lst.size; i++)
   {
     int min = i;
-    for (size_t j = i + 1; j < lst.size; j++)
+    for (int j = i + 1; j < lst.size; j++)
     {
       if (lst.items[j] < lst.items[min])
       {
@@ -65,7 +65,7 @@ void selectionsort(list lst)
  */
 void insertionsort(list lst)
 {
-  for (size_t i = 1; i < lst.size; i++)
+  for (int i = 1; i < lst.size; i++)
   {
     int key = lst.items[i];
     int j = i - 1;
@@ -96,7 +96,7 @@ void recursive_insertionsort(list lst, int n)
   {
     recursive_insertionsort(lst, n-1);
     int key = lst.items[n];
-    size_t j = n - 1;
+    int j = n - 1;
 
     while ( j>= 0 && lst.items[j] > key)
     {
@@ -117,23 +117,23 @@ void mergesort(list lst)
 {  
   if (lst.size > 1)
   {
-    size_t mid = lst.size/2;
-    size_t end = lst.size - mid;
+    int mid = lst.size/2;
+    int end = lst.size - mid;
     list sub_list_a;
     list sub_list_b;
-    size_t i = 0;
+    int i = 0;
 
     sub_list_a.size = mid;
     sub_list_a.items = (int*)malloc(sub_list_a.size * sizeof(int));
     sub_list_b.size = end;
     sub_list_b.items = (int*)malloc(sub_list_b.size * sizeof(int));
 
-    for (size_t j = 0; j < sub_list_a.size; j++)
+    for (int j = 0; j < sub_list_a.size; j++)
     {
       sub_list_a.items[j] = lst.items[i];
       i += 1;
     }
-    for (size_t j = 0; j < sub_list_b.size; j++)
+    for (int j = 0; j < sub_list_b.size; j++)
     {
       sub_list_b.items[j] = lst.items[i];
       i += 1;
@@ -155,8 +155,8 @@ void mergesort(list lst)
  */
 void merge(list lst, list sub_list_a, list sub_list_b)
 {
-  size_t a = 0;
-  size_t b = 0;
+  int a = 0;
+  int b = 0;
 
   while ((a + b) < lst.size)
   {
@@ -184,24 +184,24 @@ void merge_sort(list lst)
   mergesort_procedure(lst, 0, lst.size - 1);
 }
 
-void mergesort_procedure(list lst, size_t start, size_t end)
+void mergesort_procedure(list lst, int start, int end)
 {
   if (start < end)
   {
-    size_t mid = (start + end)/2;
+    int mid = (start + end)/2;
     mergesort_procedure(lst, start, mid);
     mergesort_procedure(lst, mid + 1, end);
     _merge_(lst, start, mid, end);
   }
   
 }
-void _merge_(list lst, size_t start, size_t mid, size_t end)
+void _merge_(list lst, int start, int mid, int end)
 {
   list sub_list_a;
   list sub_list_b;
-  size_t i;
-  size_t a = 0;
-  size_t b = 0;
+  int i;
+  int a = 0;
+  int b = 0;
   sub_list_a.size = (mid - start + 1);
   sub_list_b.size = end - mid;
   sub_list_a.items = (int *)malloc(sub_list_a.size * sizeof(int));
@@ -268,11 +268,11 @@ void quicksort(list lst)
  * @param start 
  * @param end 
  */
-void quicksort_procedure(list lst, size_t start, size_t end)
+void quicksort_procedure(list lst, int start, int end)
 {
   if (start < end)
   {
-    size_t partition_point = partition(lst, start, end);
+    int partition_point = partition(lst, start, end);
     quicksort_procedure(lst,start, partition_point);
     quicksort_procedure(lst, partition_point + 1, end);
   }
@@ -286,9 +286,9 @@ void quicksort_procedure(list lst, size_t start, size_t end)
  * @param end 
  * @return int 
  */
-int partition(list lst, size_t start, size_t end)
+int partition(list lst, int start, int end)
 {
-  size_t pivot = median_of_three(lst, start, end);
+  int pivot = median_of_three(lst, start, end);
   while (1)
   {
    while (lst.items[start] < lst.items[pivot])
@@ -323,16 +323,21 @@ int partition(list lst, size_t start, size_t end)
  * @param end 
  * @return int 
  */
-int median_of_three(list lst, size_t start, size_t end)
+int median_of_three(list lst, int start, int end)
 {
-  size_t mid = (end+ start)/2;
+  int mid = (end+ start)/2;
   int x = lst.items[mid] - lst.items[start];
   int y = lst.items[start] - lst.items[end];
   int z = lst.items[mid] - lst.items[end];
 
   return (x*y > 0 ? start : (x*z > 0 ? end : mid));
 }
-
+/**
+ * @brief performs count sort on the provided array or values. 
+ * The default sorting mode is ascending
+ * 
+ * @param lst 
+ */
 void countsort(list lst)
 {
   //find the maximum element within the array
@@ -371,6 +376,12 @@ void countsort(list lst)
   }
 }
 
+/**
+ * @brief performs radix sort on the provided array or values. 
+ * The default sorting mode is ascending
+ * 
+ * @param lst 
+ */
 void radixsort(list lst)
 {
   //the largest element within the list
@@ -427,6 +438,72 @@ void radix_countsort(list lst, int pos)
 }
 
 /**
+ * @brief 
+ * 
+ * @param lst 
+ */
+void heapsort(list lst)
+{
+  //build the maxheap
+  buildmaxheap(lst);
+  //perform the sort
+  for (int i = lst.size - 1; i >= 0; i--)
+  {
+    //swap the root node with the last child node
+    swap(lst, 0, i);
+    maxheapify(lst, i - 1, 0);
+  }
+}
+
+/**
+ * @brief builds the max-heap 
+ * 
+ * @param lst 
+ */
+void buildmaxheap(list lst)
+{
+  //the down-most parent node
+  int n = (lst.size)/2;
+
+  //build the heap
+  for (int i = n; i >= 0; i--)
+  {
+    maxheapify(lst, lst.size - 1, i);
+  }
+}
+
+/**
+ * @brief makes the heap that conforms to the max-heap.
+ * 
+ * @param lst 
+ * @param len 
+ * @param i 
+ */
+void maxheapify(list lst, int len, int i)
+{ 
+  //index of the currently considered largest element - root node index
+  int max = i;
+  //left child node index
+  int left = i*2;
+  //right child node index
+  int right = (i*2) + 1;
+
+  if (left <= len && lst.items[left] > lst.items[max])
+  {
+    max = left;
+  }
+  if (right <= len && lst.items[right] > lst.items[max])
+  {
+    max = right;
+  }
+  if (max != i)
+  {
+    swap(lst, i, max);
+    maxheapify(lst, len, max);
+  }
+}
+
+/**
  * @brief finds the maximum or largest element within the provided list/array
  * 
  * @param lst 
@@ -469,7 +546,7 @@ int getdigits(int max)
  * @param a 
  * @param b 
  */
-void swap(list lst, size_t a, size_t b)
+void swap(list lst, int a, int b)
 {
   int temp = lst.items[a];
   lst.items[a] = lst.items[b];

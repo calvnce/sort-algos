@@ -7,15 +7,15 @@ int main(int argc, char const *argv[])
   srandom(time(0));
 
   list list;
-  list.size = 115;
+  list.size = 500000;
   list.items = (int*)malloc(list.size *sizeof(int));
 
   //generate some random data for testing
   if (list.items)
   {
-    for (size_t i = 0; i < list.size; i++)
+    for (int i = 0; i < list.size; i++)
     {
-      list.items[i] = (rand() % (150 - 0 + 1)) + 0;
+      list.items[i] = (rand() % (555 - 0 + 1)) + 0;
     }
   }
   else
@@ -23,7 +23,7 @@ int main(int argc, char const *argv[])
     printf("Failed to allocate memory!");
     return EXIT_FAILURE;
   }
-  for (size_t i = 0; i < list.size; i++)
+  for (int i = 0; i < list.size; i++)
   {
     printf("%d ", list.items[i]);
   }
@@ -52,8 +52,11 @@ int main(int argc, char const *argv[])
 
   /* RADIX SORT*/
   radixsort(list);
-  
-  for (size_t i = 0; i < list.size; i++)
+
+  /* HEAPSORT*/
+  // heapsort(list);
+
+  for (int i = 0; i < list.size; i++)
   {
     if (i%25==0 && i!=0)
     {
