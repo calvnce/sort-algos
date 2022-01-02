@@ -1,5 +1,4 @@
 #include "sort.h"
-#include <stdio.h>
 
 /**
  * @brief performs bubble sort on the provided array or values. 
@@ -332,6 +331,63 @@ int median_of_three(list lst, size_t start, size_t end)
   int z = lst.items[mid] - lst.items[end];
 
   return (x*y > 0 ? start : (x*z > 0 ? end : mid));
+}
+
+void countsort(list lst)
+{
+  //find the maximum element within the array
+  int max = getmax(lst);
+  //an auxilary array
+  int aux[lst.size];
+  //frequency of the unique elements
+  int counts[max + 1];
+
+  // fill the counts array with  zeros
+  memset(counts, 0, sizeof(int)*(max + 1)); 
+
+  //get the frequency of the distinct elements in the unsorted list
+  for (int i = 0; i <lst.size; i++)
+  {
+    counts[lst.items[i]] += 1;
+  }
+
+  //comulative sum of the counts
+  for (int i = 1; i <= max; i++)
+  {
+    counts[i] += counts[i - 1];
+  }
+ 
+  //get the sorted list by placing the elements from the original list
+  //into their correct positions in the aux array
+  for (int i = lst.size - 1; i >-1 ; i--)
+  {
+    aux[--counts[lst.items[i]]] = lst.items[i];
+  }
+
+  //final sortes list
+  for (int i = 0; i < lst.size; i++)
+  {
+    lst.items[i] = aux[i]; 
+  }
+}
+
+/**
+ * @brief finds the maximum or largest element within the provided list/array
+ * 
+ * @param lst 
+ * @return int 
+ */
+int getmax(list lst)
+{
+  int max = INT_MIN;
+  for (int i = 0; i < lst.size; i++)
+  {
+    if (max < lst.items[i])
+    {
+      max = lst.items[i];
+    }
+  }
+  return max;
 }
 
 /**

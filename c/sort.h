@@ -1,4 +1,7 @@
 #include <stdlib.h>
+#include <limits.h>
+#include <stdio.h>
+#include <string.h>
 
 /**
  * @brief represents the list structure for the data to be sorted
@@ -10,7 +13,7 @@ typedef struct
   int* items;
 }list;
 
-
+void swap(list, size_t, size_t);
 void bubblesort(list list);
 void selectionsort(list);
 void insertionsort(list);
@@ -24,4 +27,5 @@ void quicksort(list);
 void quicksort_procedure(list, size_t, size_t);
 int partition(list, size_t, size_t);
 int median_of_three(list, size_t, size_t);
-void swap(list, size_t, size_t);
+void countsort(list);
+int getmax(list);

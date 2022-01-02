@@ -7,7 +7,7 @@ int main(int argc, char const *argv[])
   srandom(time(0));
 
   list list;
-  list.size = 5000000;
+  list.size = 115;
   list.items = (int*)malloc(list.size *sizeof(int));
 
   //generate some random data for testing
@@ -15,7 +15,7 @@ int main(int argc, char const *argv[])
   {
     for (size_t i = 0; i < list.size; i++)
     {
-      list.items[i] = (rand() % (978 - 5 + 1)) + 5;
+      list.items[i] = (rand() % (150 - 0 + 1)) + 0;
     }
   }
   else
@@ -45,7 +45,10 @@ int main(int argc, char const *argv[])
   // merge_sort(list);
 
   /*QUICKSORT*/
-  quicksort(list);
+  // quicksort(list);
+
+  /* COUNT SORT */
+  countsort(list);
   for (size_t i = 0; i < list.size; i++)
   {
     if (i%25==0 && i!=0)
