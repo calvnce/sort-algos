@@ -337,7 +337,7 @@ void countsort(list lst)
 {
   //find the maximum element within the array
   int max = getmax(lst);
-  //an auxilary array
+  //an auxiliary array
   int aux[lst.size];
   //frequency of the unique elements
   int counts[max + 1];
@@ -371,6 +371,61 @@ void countsort(list lst)
   }
 }
 
+void radixsort(list lst)
+{
+  //the largest element within the list
+  int max = getmax(lst);
+  //number of digits consituting the largest element
+  int digits = getdigits(max);
+  //the current digit number being compared
+  int pos = 1;
+
+  //perform the sort
+  for (int i = 0; i < digits; i++)
+  {
+    radix_countsort(lst, pos);
+    //multiply by ten to get the next digit for comparision
+    pos*=10;
+  }
+}
+
+void radix_countsort(list lst, int pos)
+{
+  //an auxiliary array
+  int aux[lst.size];
+  //counts of each digit occurrence [0 - 9]
+  int count[10];
+  
+  //fill the counts with zeros
+  memset(count, 0, sizeof(int)*10);
+
+  //fill the counts array with the unique frequency counts
+  for (int i = 0; i < lst.size; i++)
+  {
+    count[((lst.items[i]/pos)%10)] += 1;    
+  }
+  //compute the cummulative of the count array 
+  // represent the actual position of the elements in the final sorted list/array
+  for (int i = 1; i < 10; i++)
+  {
+    count[i] += count[i - 1];
+  }
+  
+  //fill sorted list/array
+  for (int i = lst.size - 1; i>=0; i--)
+  {
+    //count[((lst.items[i]/pos)%10)] -=1;
+
+    aux[--count[((lst.items[i]/pos)%10)]] = lst.items[i];
+  }
+  
+  //final sorted list/array
+  for (int i = 0; i < lst.size; i++)
+  {
+    lst.items[i] = aux[i];
+  }
+}
+
 /**
  * @brief finds the maximum or largest element within the provided list/array
  * 
@@ -388,6 +443,23 @@ int getmax(list lst)
     }
   }
   return max;
+}
+
+/**
+ * @brief finds the number of digits that makes up the provided parameter value
+ * 
+ * @param max 
+ * @return int 
+ */
+int getdigits(int max)
+{
+  int digits = 0;
+  while (max != 0)
+  {
+    digits+=1;
+    max/=10;
+  }
+  return digits;
 }
 
 /**

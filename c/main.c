@@ -48,7 +48,11 @@ int main(int argc, char const *argv[])
   // quicksort(list);
 
   /* COUNT SORT */
-  countsort(list);
+  // countsort(list);
+
+  /* RADIX SORT*/
+  radixsort(list);
+  
   for (size_t i = 0; i < list.size; i++)
   {
     if (i%25==0 && i!=0)

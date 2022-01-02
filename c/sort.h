@@ -28,4 +28,7 @@ void quicksort_procedure(list, size_t, size_t);
 int partition(list, size_t, size_t);
 int median_of_three(list, size_t, size_t);
 void countsort(list);
+void radixsort(list);
+void radix_countsort(list, int);
+int getdigits(int);
 int getmax(list);
