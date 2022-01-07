@@ -6,4 +6,3 @@ This repository contains the implemntations of various sorting algorithms implem
   - Java
   - JavaScript
   - Python
-  - 
